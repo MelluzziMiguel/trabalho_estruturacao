@@ -10,23 +10,27 @@ import java.util.List;
 
 public class AnimalService {
 
-    private final AnimalRepository animalRepository = new AnimalRepository();
-    private final TutorRepository tutorRepository = new TutorRepository();
+    private final AnimalRepository animalRepository;
+    private final TutorRepository tutorRepository;
 
-    public Animal cadastrarAnimal(String nome, String especie, String raca, int idTutor) throws SQLException {
-        if (nome == null || nome.isBlank()) {
+    public AnimalService(AnimalRepository animalRepository, TutorRepository tutorRepository) {
+        this.animalRepository = animalRepository;
+        this.tutorRepository = tutorRepository;
+    }
+
+    public Animal cadastrarAnimal(Animal animal) throws SQLException {
+        if (animal.getNome() == null || animal.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome do animal é obrigatório.");
         }
-        if (especie == null || especie.isBlank()) {
+        if (animal.getEspecie() == null || animal.getEspecie().isBlank()) {
             throw new IllegalArgumentException("A espécie do animal é obrigatória.");
         }
 
-        Tutor tutor = tutorRepository.buscarPorId(idTutor);
+        Tutor tutor = tutorRepository.buscarPorId(animal.getIdTutor());
         if (tutor == null) {
-            throw new IllegalArgumentException("Não é possível cadastrar o animal: tutor com id " + idTutor + " não encontrado.");
+            throw new IllegalArgumentException("Não é possível cadastrar o animal: tutor com id " + animal.getIdTutor() + " não encontrado.");
         }
 
-        Animal animal = new Animal(nome, especie, raca, idTutor);
         return animalRepository.salvar(animal);
     }
 

@@ -8,65 +8,33 @@ import java.util.List;
 
 public class AnimalController {
 
-    private final AnimalService animalService = new AnimalService();
+    private final AnimalService animalService;
 
-    public Animal cadastrar(String nome, String especie, String raca, int idTutor) {
-        try {
-            Animal animal = animalService.cadastrarAnimal(nome, especie, raca, idTutor);
-            System.out.println("[OK] Animal cadastrado: " + animal);
-            return animal;
-        } catch (IllegalArgumentException | SQLException e) {
-            System.out.println("[ERRO] Falha ao cadastrar animal: " + e.getMessage());
-            return null;
-        }
+    public AnimalController(AnimalService animalService) {
+        this.animalService = animalService;
     }
 
-    public Animal buscarPorId(int id) {
-        try {
-            Animal animal = animalService.buscarPorId(id);
-            if (animal == null) {
-                System.out.println("[INFO] Animal com id " + id + " não encontrado.");
-            }
-            return animal;
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao buscar animal: " + e.getMessage());
-            return null;
-        }
+    public Animal cadastrar(Animal animal) throws SQLException {
+        return animalService.cadastrarAnimal(animal);
     }
 
-    public List<Animal> listarTodos() {
-        try {
-            return animalService.listarTodos();
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao listar animais: " + e.getMessage());
-            return List.of();
-        }
+    public Animal buscarPorId(int id) throws SQLException {
+        return animalService.buscarPorId(id);
     }
 
-    public List<Animal> listarPorTutor(int idTutor) {
-        try {
-            return animalService.listarPorTutor(idTutor);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao listar animais do tutor: " + e.getMessage());
-            return List.of();
-        }
+    public List<Animal> listarTodos() throws SQLException {
+        return animalService.listarTodos();
     }
 
-    public boolean atualizar(Animal animal) {
-        try {
-            return animalService.atualizar(animal);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao atualizar animal: " + e.getMessage());
-            return false;
-        }
+    public List<Animal> listarPorTutor(int idTutor) throws SQLException {
+        return animalService.listarPorTutor(idTutor);
     }
 
-    public boolean excluir(int id) {
-        try {
-            return animalService.excluir(id);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao excluir animal: " + e.getMessage());
-            return false;
-        }
+    public boolean atualizar(Animal animal) throws SQLException {
+        return animalService.atualizar(animal);
+    }
+
+    public boolean excluir(int id) throws SQLException {
+        return animalService.excluir(id);
     }
 }

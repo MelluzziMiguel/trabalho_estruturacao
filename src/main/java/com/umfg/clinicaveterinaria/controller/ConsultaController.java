@@ -3,72 +3,38 @@ package com.umfg.clinicaveterinaria.controller;
 import com.umfg.clinicaveterinaria.model.Consulta;
 import com.umfg.clinicaveterinaria.service.ConsultaService;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class ConsultaController {
 
-    private final ConsultaService consultaService = new ConsultaService();
+    private final ConsultaService consultaService;
 
-    public Consulta registrar(int idAnimal, LocalDate data, String motivo, BigDecimal valor) {
-        try {
-            Consulta consulta = consultaService.registrarConsulta(idAnimal, data, motivo, valor);
-            System.out.println("[OK] Consulta registrada: " + consulta);
-            return consulta;
-        } catch (IllegalArgumentException | SQLException e) {
-            System.out.println("[ERRO] Falha ao registrar consulta: " + e.getMessage());
-            return null;
-        }
+    public ConsultaController(ConsultaService consultaService) {
+        this.consultaService = consultaService;
     }
 
-    public Consulta buscarPorId(int id) {
-        try {
-            Consulta consulta = consultaService.buscarPorId(id);
-            if (consulta == null) {
-                System.out.println("[INFO] Consulta com id " + id + " não encontrada.");
-            }
-            return consulta;
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao buscar consulta: " + e.getMessage());
-            return null;
-        }
+    public Consulta registrar(Consulta consulta) throws SQLException {
+        return consultaService.registrarConsulta(consulta);
     }
 
-    public List<Consulta> listarTodas() {
-        try {
-            return consultaService.listarTodas();
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao listar consultas: " + e.getMessage());
-            return List.of();
-        }
+    public Consulta buscarPorId(int id) throws SQLException {
+        return consultaService.buscarPorId(id);
     }
 
-    public List<Consulta> listarHistoricoPorAnimal(int idAnimal) {
-        try {
-            return consultaService.listarHistoricoPorAnimal(idAnimal);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao listar histórico do animal: " + e.getMessage());
-            return List.of();
-        }
+    public List<Consulta> listarTodas() throws SQLException {
+        return consultaService.listarTodas();
     }
 
-    public boolean atualizar(Consulta consulta) {
-        try {
-            return consultaService.atualizar(consulta);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao atualizar consulta: " + e.getMessage());
-            return false;
-        }
+    public List<Consulta> listarHistoricoPorAnimal(int idAnimal) throws SQLException {
+        return consultaService.listarHistoricoPorAnimal(idAnimal);
     }
 
-    public boolean excluir(int id) {
-        try {
-            return consultaService.excluir(id);
-        } catch (SQLException e) {
-            System.out.println("[ERRO] Falha ao excluir consulta: " + e.getMessage());
-            return false;
-        }
+    public boolean atualizar(Consulta consulta) throws SQLException {
+        return consultaService.atualizar(consulta);
+    }
+
+    public boolean excluir(int id) throws SQLException {
+        return consultaService.excluir(id);
     }
 }

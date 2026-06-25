@@ -8,17 +8,20 @@ import java.util.List;
 
 public class TutorService {
 
-    private final TutorRepository tutorRepository = new TutorRepository();
+    private final TutorRepository tutorRepository;
 
-    public Tutor cadastrarTutor(String nome, String endereco, String telefone) throws SQLException {
-        if (nome == null || nome.isBlank()) {
+    public TutorService(TutorRepository tutorRepository) {
+        this.tutorRepository = tutorRepository;
+    }
+
+    public Tutor cadastrarTutor(Tutor tutor) throws SQLException {
+        if (tutor.getNome() == null || tutor.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome do tutor é obrigatório.");
         }
-        if (telefone == null || telefone.isBlank()) {
+        if (tutor.getTelefone() == null || tutor.getTelefone().isBlank()) {
             throw new IllegalArgumentException("O telefone do tutor é obrigatório.");
         }
 
-        Tutor tutor = new Tutor(nome, endereco, telefone);
         return tutorRepository.salvar(tutor);
     }
 

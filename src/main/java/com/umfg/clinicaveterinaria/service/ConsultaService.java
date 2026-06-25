@@ -7,29 +7,32 @@ import com.umfg.clinicaveterinaria.repository.ConsultaRepository;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class ConsultaService {
 
-    private final ConsultaRepository consultaRepository = new ConsultaRepository();
-    private final AnimalRepository animalRepository = new AnimalRepository();
+    private final ConsultaRepository consultaRepository;
+    private final AnimalRepository animalRepository;
 
-    public Consulta registrarConsulta(int idAnimal, LocalDate data, String motivo, BigDecimal valor) throws SQLException {
-        Animal animal = animalRepository.buscarPorId(idAnimal);
+    public ConsultaService(ConsultaRepository consultaRepository, AnimalRepository animalRepository) {
+        this.consultaRepository = consultaRepository;
+        this.animalRepository = animalRepository;
+    }
+
+    public Consulta registrarConsulta(Consulta consulta) throws SQLException {
+        Animal animal = animalRepository.buscarPorId(consulta.getIdAnimal());
         if (animal == null) {
-            throw new IllegalArgumentException("Não é possível registrar a consulta: animal com id " + idAnimal + " não encontrado.");
+            throw new IllegalArgumentException("Animal com id " + consulta.getIdAnimal() + " não encontrado.");
         }
 
-        if (valor == null || valor.compareTo(BigDecimal.ZERO) < 0) {
+        if (consulta.getValor() == null || consulta.getValor().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("O valor da consulta não pode ser negativo.");
         }
 
-        if (motivo == null || motivo.isBlank()) {
+        if (consulta.getMotivo() == null || consulta.getMotivo().isBlank()) {
             throw new IllegalArgumentException("O motivo do atendimento é obrigatório.");
         }
 
-        Consulta consulta = new Consulta(idAnimal, data, motivo, valor);
         return consultaRepository.salvar(consulta);
     }
 
