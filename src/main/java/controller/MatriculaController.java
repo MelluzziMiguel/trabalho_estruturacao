@@ -20,11 +20,11 @@ public class MatriculaController {
     public void realizarMatricula(Aluno aluno, Curso curso, BigDecimal valor) {
         try {
             Matricula matricula = matriculaService.matricular(aluno, curso, valor);
-            System.out.println("✔ Matrícula realizada com sucesso! " + matricula);
+            System.out.println("Matrícula realizada com sucesso! " + matricula);
         } catch (IllegalArgumentException e) {
-            System.out.println("✘ Erro de validação: " + e.getMessage());
+            System.out.println("Erro de validação: " + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("✘ Erro ao salvar matrícula: " + e.getMessage());
+            System.out.println("Erro ao salvar matrícula: " + e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class MatriculaController {
             List<Matricula> lista = matriculaService.listarPorCurso(curso);
             System.out.println("\n── Alunos em " + curso.getNome() + " ──");
             if (lista.isEmpty()) {
-                System.out.println("  Nenhum aluno matriculado.");
+                System.out.println("Nenhum aluno matriculado.");
             } else {
                 lista.forEach(m -> System.out.println("  " + m.getAluno().getNome() + " — R$" + m.getValor()));
             }
